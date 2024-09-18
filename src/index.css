@@ -64,6 +64,16 @@ code {
   padding: 10px !important;
 }
 
+.p-30 {
+  padding: 30px !important;
+}
+
+.l-center {
+  align-items: center;
+  align-self: center;
+  align-content: center;
+}
+
 .center {
   margin-left: auto !important;
   margin-right: auto !important;

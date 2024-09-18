@@ -398,3 +398,88 @@ Màu các ngày trước đó */
     box-shadow: none !important;  
     background: none !important;
 }
+
+
+
+/* Login */
+.l-wrapper {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../../public/Cinemas-Ho-Chi-Minh-City.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.l-box {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--colorDes);
+    border-radius: 1rem;
+}
+
+.l-icon {
+    margin: 0.6rem !important;
+    background-color: black !important;
+}
+
+.l-btn {
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+    border-radius: 6.25rem !important;
+    padding: 0.65rem !important;
+    background-color: var(--colorMain) !important;
+}
+
+.btn-sign-up {
+    background-color: green !important;
+}
+
+.btn-mt {
+    margin-top: 0.5rem !important;
+}
+
+
+
+/* Account */
+.a-container {
+    padding: 40px;
+    border: 1px solid var(--colorSecond);
+    border-radius: 16px;
+    margin-bottom: 50px;
+}
+
+.divider {
+    margin-top: 30px !important;
+    background: var(--colorSecond);
+}
+
+.inner-width {
+    width: 100% !important;
+}
+
+.a-form input,
+.a-form label {
+    color: var(--colorDes) !important;
+    z-index: 100;
+}
+
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: #1976d2 !important;
+}
+
+.a-form fieldset {
+    border-color: var(--colorSecond);
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline {
+    border-color: var(--colorSecond) !important;
+    background: #191b21 !important;
+    color: red !important;
+}
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
+    -webkit-text-fill-color: var(--colorDes) !important;
+}

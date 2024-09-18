@@ -1,9 +1,12 @@
 import './App.css';
 import React, { useState } from 'react';
-import { AppBar, Button, Container, Toolbar, useScrollTrigger, CssBaseline, styled, alpha, InputBase, Box, Link, Typography, IconButton, Table, TableContainer, Paper, TableHead, TableRow, TableCell, TableBody, Stack } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
+import { AppBar, Button, Container, Toolbar, useScrollTrigger, CssBaseline, styled, alpha, InputBase, Box, Typography, Stack, Menu, MenuItem, Fade } from "@mui/material";
+import { Route, Routes, Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import HomePage from './Component/User/Home';
+import LoginPage from './Component/User/Login';
+import SignupPage from './Component/User/Signup';
+import AccountPage from './Component/User/Account';
 import SearchIcon from '@mui/icons-material/Search';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import BuyTicketPage from './Component/User/BuyTicket';
@@ -76,25 +79,28 @@ function App(props) {
         },
     }));
 
-    const [ open, setOpen ] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
 
-    const openChat = () => {
-        setOpen(true);
-    }
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+        document.body.classList.add('menu-open');
+    };
 
-    const closeChat = () => {
-        setOpen(false);
-    }
+    const handleClose = () => {
+        setAnchorEl(null);
+        document.body.classList.remove('menu-open');
+    };
    
     return (
         <>
         <CssBaseline />
         <ElevationScroll {...props}> 
-            <AppBar position='fixed'>
+            <AppBar position='fixed' className="header">
                 <Container maxWidth="lg">
                     <Toolbar style={{ padding: 0 }} className='text-center'>
                         <Box component="logo" sx={{ p: 1 , width: '150px' }}>
-                            <Link href="/" underline="none">
+                            <Link to="/" underline="none">
                                 <img className='header-height' alt="Logo"
                                     src="https://i.pinimg.com/originals/f1/30/f9/f130f9773716f8c688005c24dd41404d.png" />
                             </Link>
@@ -111,9 +117,9 @@ function App(props) {
 
                             <Button color="inherit" className='header-height btn-header-width'>
                                 <DropdownButton id="dropdown-button" title="THỂ LOẠI">
-                                <Dropdown.Item href="/buy-ticket/step1" className='dropdown-item'>Action</Dropdown.Item>
-                                <Dropdown.Item href="#/action-2" className='dropdown-item'>Another action</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3" className='dropdown-item'>Something else</Dropdown.Item>
+                                    <Dropdown.Item href="/buy-ticket/step1" className='dropdown-item'>Action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2" className='dropdown-item'>Another action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3" className='dropdown-item'>Something else</Dropdown.Item>
                                 </DropdownButton>
                             </Button>
                         </Box>
@@ -127,15 +133,19 @@ function App(props) {
                             </Search>
                         </Box>
 
-                        <Button color="inherit" variant="outlined" className='btn-member header-height'>THÀNH VIÊN</Button>
+                        <Link to="/login">
+                            <Button color="inherit" variant="outlined" className='btn-member header-height' onClick={handleClick}>
+                                THÀNH VIÊN
+                            </Button>
+
+                            <Menu id="fade-menu" MenuListProps={{ 'aria-labelledby': 'fade-button', }} anchorEl={anchorEl}
+                                open={open} onClose={handleClose} TransitionComponent={Fade} >
+                                    <MenuItem component={Link} to="/account" onClick={handleClose}>Thông tin tài khoản</MenuItem>
+                                    <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
+                            </Menu>
+                        </Link>
                     </Toolbar>
                 </Container>
-
-                <Box sx={{ position: 'fixed', bottom: 0, right: 30, bottom: 30 }}>
-                    <IconButton aria-label="message" className="btn-message" size='large' onClick={openChat}>
-                        <img width="32" height="32" src="https://img.icons8.com/color/48/filled-chat.png" alt="filled-chat"/>
-                    </IconButton>
-                </Box>
             </AppBar>
         </ElevationScroll>
 
@@ -143,6 +153,9 @@ function App(props) {
 
         <Routes>
             <Route exact path="/" Component={HomePage} />
+            <Route path="/login" Component={LoginPage} />
+            <Route path="/sign-up" Component={SignupPage} />
+            <Route path="/account" Component={AccountPage} />
             <Route path="/buy-ticket/*" Component={BuyTicketPage} />
         </Routes>
         

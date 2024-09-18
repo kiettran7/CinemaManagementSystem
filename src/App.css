@@ -42,6 +42,15 @@
   font-weight: bold !important;
 }
 
+.header {
+  padding-right: 0 !important;
+}
+
+body.menu-open {
+  padding-right: 0 !important;
+  overflow: auto !important;
+}
+
 .header-height {
   height: 50px;
 }
@@ -62,20 +71,18 @@
   font-size: 0.875rem;
 }
 
+#fade-menu li:hover,
+#fade-menu a:hover {
+  color: white !important
+}
+
 .btn-member {
   width: 150px;
+  color: white !important;
 }
 
 .btn-member:hover {
   border: none;
-}
-
-.btn-message {
-  background-color: var(--colorDes) !important;
-}
-
-.btn-message:hover {
-  color: white !important
 }
 
 .footer {

@@ -22,6 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+.gitignore
 /src/Component/User/*
-!/src/Component/User/Home.js
+!/src/Component/User/Signup.js
+!/src/Component/User/Login.js
 !/src/Component/User/Style.css
