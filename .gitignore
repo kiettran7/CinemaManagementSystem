@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+x# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
@@ -24,5 +24,6 @@ yarn-error.log*
 
 .gitignore
 /src/Component/User/*
-!/src/Component/User/MovieDetail.js
+!/src/Component/User/BuyTicket.js
+!/src/Component/User/BuyTicketStep1.js
 !/src/Component/User/Style.css
