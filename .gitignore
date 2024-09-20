@@ -24,6 +24,5 @@ yarn-error.log*
 
 .gitignore
 /src/Component/User/*
-!/src/Component/User/BuyTicket.js
-!/src/Component/User/BuyTicketStep1.js
+!/src/Component/User/BuyTicketStep2.js
 !/src/Component/User/Style.css
