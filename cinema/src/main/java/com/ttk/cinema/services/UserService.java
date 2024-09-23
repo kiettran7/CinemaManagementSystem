@@ -1,13 +1,14 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.UserCreationRequest;
-import com.ttk.cinema.DTOs.request.UserUpdateRequest;
+import com.ttk.cinema.DTOs.request.creation.UserCreationRequest;
+import com.ttk.cinema.DTOs.request.update.UserUpdateRequest;
 import com.ttk.cinema.DTOs.response.UserResponse;
 import com.ttk.cinema.enums.Role;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
 import com.ttk.cinema.mappers.UserMapper;
 import com.ttk.cinema.POJOs.User;
+import com.ttk.cinema.repositories.RoleRepository;
 import com.ttk.cinema.repositories.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     public User createUser(UserCreationRequest request){
         if (userRepository.existsByUsername(request.getUsername())){
@@ -40,7 +42,7 @@ public class UserService {
 
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.CUSTOMER.name());
-        user.setRoles(roles);
+//        user.setRoles(roles);
         return userRepository.save(user);
     }
 
@@ -58,6 +60,10 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

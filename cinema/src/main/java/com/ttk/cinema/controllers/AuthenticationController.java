@@ -1,9 +1,7 @@
 package com.ttk.cinema.controllers;
 
 import com.nimbusds.jose.JOSEException;
-import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.AuthenticationRequest;
-import com.ttk.cinema.DTOs.request.IntrospectRequest;
+import com.ttk.cinema.DTOs.request.*;
 import com.ttk.cinema.DTOs.response.AuthenticationResponse;
 import com.ttk.cinema.DTOs.response.IntrospectResponse;
 import com.ttk.cinema.services.AuthenticationService;
@@ -39,6 +37,23 @@ public class AuthenticationController {
 
         return ApiResponse.<IntrospectResponse>builder()
                 .result(result)
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(result)
+                .build();
+    }
+
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request)
+            throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder()
                 .build();
     }
 }

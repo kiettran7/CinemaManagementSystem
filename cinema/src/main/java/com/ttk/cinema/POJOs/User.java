@@ -1,8 +1,10 @@
 package com.ttk.cinema.POJOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -26,7 +28,18 @@ public class User {
     LocalDate birthday;
     LocalDate joinedDate;
     String avatar;
-    Set<String> roles;
+
+    @Transient
+    @JsonIgnore
+    private MultipartFile file;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_name")
+    )
+    Set<Role> roles;
 
     @PrePersist
     public void prePersist() {
