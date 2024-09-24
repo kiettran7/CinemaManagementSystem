@@ -16,9 +16,9 @@ public class TicketResponse {
     LocalDateTime createdDate;
     String status;
     String bookingType;
-    ShowEventResponse showId; // Liên kết với show_event
-    SeatResponse seatId;      // Liên kết với seat
-    UserResponse customerId;  // Liên kết với user
-    UserResponse staffId;     // Liên kết với user
-    MovieResponse movieId;    // Liên kết với movie
+    ShowEventResponse show; // Liên kết với show_event
+    SeatResponse seat;      // Liên kết với seat
+    UserResponse customer;  // Liên kết với user
+    UserResponse staff;     // Liên kết với user
+    MovieResponse movie;    // Liên kết với movie
 }

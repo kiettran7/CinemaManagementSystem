@@ -21,6 +21,7 @@ public class Promotion {
     String promotionName;
     float discountValue;
 
+
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
     Set<Bill> bills;
 }

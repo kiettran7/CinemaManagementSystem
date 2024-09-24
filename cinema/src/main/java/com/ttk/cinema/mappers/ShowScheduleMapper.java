@@ -11,6 +11,13 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ShowScheduleMapper {
     ShowSchedule toShowSchedule(ShowScheduleCreationRequest request);
+
+    @Mapping(source = "movie.movieId", target = "movie.movieId")
+    @Mapping(source = "movie.movieImage", target = "movie.movieImage")
+    @Mapping(source = "movie.movieName", target = "movie.movieName")
+    @Mapping(source = "movie.moviePrice", target = "movie.moviePrice")
+    @Mapping(source = "movie.duration", target = "movie.duration")
+    @Mapping(source = "movie.status", target = "movie.status")
     ShowScheduleResponse toShowScheduleResponse(ShowSchedule showSchedule);
 
     @Mapping(target = "movie", ignore = true)

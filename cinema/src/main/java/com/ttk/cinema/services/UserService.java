@@ -19,8 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,20 +32,30 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final CloudinaryService cloudinaryService;
 
-    public User createUser(UserCreationRequest request){
+    public UserResponse createUser(UserCreationRequest request, boolean isCustomer) throws IOException {
         if (userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 
         User user = userMapper.toUser(request);
 
+        if (request.getFile() != null && !request.getFile().isEmpty()) {
+            user.setAvatar(cloudinaryService.uploadFile(request.getFile()));
+        }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.CUSTOMER.name());
-//        user.setRoles(roles);
-        return userRepository.save(user);
+        Set<com.ttk.cinema.POJOs.Role> roles = new HashSet<>();
+        com.ttk.cinema.POJOs.Role role;
+        if (isCustomer) {
+            role = this.roleRepository.findById("CUSTOMER").orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+        } else {
+            role = this.roleRepository.findById("STAFF").orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+        }
+        roles.add(role);
+        user.setRoles(roles);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     public UserResponse getMyInfo() {
@@ -55,15 +67,18 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    public UserResponse updateUser(Long userId, UserUpdateRequest request) {
+    public UserResponse updateUser(Long userId, UserUpdateRequest request) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         userMapper.updateUser(user, request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getFile() != null && !request.getFile().isEmpty()) {
+            user.setAvatar(cloudinaryService.uploadFile(request.getFile()));
+        }
 
-        var roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+//        var roles = roleRepository.findAllById(request.getRoles());
+//        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

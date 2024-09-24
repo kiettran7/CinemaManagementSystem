@@ -2,6 +2,7 @@ package com.ttk.cinema.DTOs.request.creation;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -12,10 +13,11 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MovieCreationRequest {
-    String movieImage;
+    String movieName;
     float moviePrice;
     int duration;
     String status;
-    Set<Long> genreIds; // Liên kết với bảng genre
-    Set<Long> tagIds;   // Liên kết với bảng tag
+    Set<Long> genres; // Liên kết với bảng genre
+    Set<Long> tags;   // Liên kết với bảng tag
+    MultipartFile file;
 }

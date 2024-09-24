@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,5 @@ public class UserUpdateRequest {
     String fullName;
     @DobConstraint(min = 18, message = "INVALID_DOB")
     LocalDate birthday;
-    String avatar;
-    List<String> roles; // Roles like "ROLE_ADMIN", "ROLE_USER"
     MultipartFile file;
 }

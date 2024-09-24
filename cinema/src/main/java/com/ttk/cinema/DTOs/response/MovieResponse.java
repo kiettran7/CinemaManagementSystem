@@ -16,6 +16,7 @@ import java.util.Set;
 public class MovieResponse {
     long movieId;
     String movieImage;
+    String movieName;
     float moviePrice;
     int duration;
     String status;

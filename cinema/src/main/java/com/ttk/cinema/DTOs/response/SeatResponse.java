@@ -1,7 +1,10 @@
 package com.ttk.cinema.DTOs.response;
 
+import com.ttk.cinema.POJOs.ShowRoom;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -11,5 +14,5 @@ import lombok.experimental.FieldDefaults;
 public class SeatResponse {
     Long seatId;
     String seatName;
-    ShowRoomResponse showRoomId; // Liên kết với show_room
+    ShowRoomResponse showRoom; // Liên kết với show_room
 }

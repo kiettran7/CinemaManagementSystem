@@ -29,6 +29,14 @@ public class Bill {
     @JoinColumn(name = "ticket_id")
     Ticket ticket;
 
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
-    Set<BillItem> billItems;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "bill_item",
+            joinColumns = @JoinColumn(name = "bill_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
+    Set<Item> items;
+
+//    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+//    Set<BillItem> billItems;
 }

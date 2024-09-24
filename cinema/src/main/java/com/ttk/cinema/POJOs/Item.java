@@ -22,6 +22,9 @@ public class Item {
     String itemType; // POPCORN, DRINK
     float itemPrice;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    Set<BillItem> billItems;
+    @ManyToMany(mappedBy = "items", cascade = CascadeType.ALL)
+    Set<Bill> bills;
+
+//    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+//    Set<BillItem> billItems;
 }

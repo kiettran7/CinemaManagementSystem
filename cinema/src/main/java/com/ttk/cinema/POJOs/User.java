@@ -31,7 +31,7 @@ public class User {
 
     @Transient
     @JsonIgnore
-    private MultipartFile file;
+    MultipartFile file;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

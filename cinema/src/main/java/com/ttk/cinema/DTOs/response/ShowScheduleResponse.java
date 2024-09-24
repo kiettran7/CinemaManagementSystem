@@ -13,5 +13,5 @@ import java.time.LocalDate;
 public class ShowScheduleResponse {
     Long showScheduleId;
     LocalDate showDate;
-    MovieResponse movieId; // Liên kết với movie
+    MovieResponse movie; // Liên kết với movie
 }

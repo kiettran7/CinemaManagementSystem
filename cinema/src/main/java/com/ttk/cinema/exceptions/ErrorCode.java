@@ -15,6 +15,21 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
+    GENRE_NOT_FOUND(1009, "Genre not found", HttpStatus.NOT_FOUND),
+    TAG_NOT_FOUND(1010, "Tag not found", HttpStatus.NOT_FOUND),
+    MOVIE_NOT_FOUND(1011, "Movie not found", HttpStatus.NOT_FOUND),
+    SHOW_SCHEDULE_NOT_FOUND(1013, "Show schedule not found", HttpStatus.NOT_FOUND),
+    SHOWTIME_NOT_FOUND(1014, "Showtime not found", HttpStatus.NOT_FOUND),
+    SHOW_ROOM_NOT_FOUND(1015, "Show room not found", HttpStatus.NOT_FOUND),
+    SHOW_EVENT_NOT_FOUND(1016, "Show event not found", HttpStatus.NOT_FOUND),
+    SEAT_NOT_FOUND(1017, "Seat not found", HttpStatus.NOT_FOUND),
+    SEAT_RESERVATION_NOT_FOUND(1018, "Seat reservation not found", HttpStatus.NOT_FOUND),
+    TICKET_NOT_FOUND(1019, "Ticket not found", HttpStatus.NOT_FOUND),
+    PROMOTION_NOT_FOUND(1020, "Promotion not found", HttpStatus.NOT_FOUND),
+    BILL_NOT_FOUND(1021, "Bill not found", HttpStatus.NOT_FOUND),
+    BILL_ITEM_NOT_FOUND(1022, "Bill item not found", HttpStatus.NOT_FOUND),
+    ITEM_NOT_FOUND(1023, "Item not found", HttpStatus.NOT_FOUND),
+    ROLE_NOT_FOUND(1024, "Role not found", HttpStatus.NOT_FOUND)
     ;
 
     private int code;

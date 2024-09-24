@@ -24,6 +24,6 @@ public class Seat {
     @JoinColumn(name = "show_room_id")
     ShowRoom showRoom;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
-    Set<SeatReservation> seatReservations;
+//    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
+//    Set<SeatReservation> seatReservations;
 }

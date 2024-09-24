@@ -10,7 +10,10 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
+    @Mapping(target = "genres", ignore = true)
+    @Mapping(target = "tags", ignore = true)
     Movie toMovie(MovieCreationRequest request);
+
     MovieResponse toMovieResponse(Movie movie);
 
     @Mapping(target = "genres", ignore = true)

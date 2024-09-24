@@ -28,10 +28,11 @@ public class Movie {
     private MultipartFile file;
 
     float moviePrice;
+    String movieName;
     int duration; // Thời lượng phim
     String status; // NOW_SHOWING, UPCOMING, ARCHIVED
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tag_movie",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -39,7 +40,7 @@ public class Movie {
     )
     Set<Tag> tags;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "genre_movie",
             joinColumns = @JoinColumn(name = "movie_id"),

@@ -11,8 +11,12 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface SeatMapper {
     Seat toSeat(SeatCreationRequest request);
+
+    // Ánh xạ từ Seat sang SeatResponse bao gồm ShowRoom
+    @Mapping(source = "showRoom.showRoomId", target = "showRoom.showRoomId")
+    @Mapping(source = "showRoom.showRoomName", target = "showRoom.showRoomName")
     SeatResponse toSeatResponse(Seat seat);
 
-    @Mapping(target = "reservations", ignore = true)
+//    @Mapping(target = "seatReservations", ignore = true)
     void updateSeat(@MappingTarget Seat seat, SeatUpdateRequest request);
 }

@@ -13,25 +13,28 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@CrossOrigin
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     UserService userService;
     CloudinaryService cloudinaryService;
 
     @PostMapping
-    ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
+    ApiResponse<UserResponse> createUser(@ModelAttribute UserCreationRequest request) throws IOException {
         logger.info("POST request to /users");
-        return ApiResponse.<User>builder()
-                .result(userService.createUser(request))
+
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request, true))
                 .build();
     }
 
@@ -59,7 +62,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     ApiResponse<UserResponse> updateUser(@PathVariable String userId,
-                                         @RequestBody UserUpdateRequest request) {
+                                         @ModelAttribute UserUpdateRequest request) throws IOException {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(Long.parseLong(userId), request))
                 .build();

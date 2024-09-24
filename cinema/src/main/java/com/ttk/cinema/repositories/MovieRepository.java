@@ -10,7 +10,4 @@ import java.util.Set;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-    Set<Movie> findAllByGenres_IdAndTags_Id(Long genreId, Long tagId);
-    Set<Movie> findAllByGenres(Long genreId);
-    Set<Movie> findAllByTag(Long tagId);
 }
