@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShowtimeResponse {
-    Long showtimeId;
+    String id;
     String startTime;
     String endTime;
 }

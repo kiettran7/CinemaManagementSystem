@@ -17,40 +17,22 @@ import java.util.Set;
 @Entity
 public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long movieId;
-
-    @Lob
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String movieImage;
 
     @Transient
     @JsonIgnore
-    private MultipartFile file;
+    MultipartFile file;
 
     float moviePrice;
     String movieName;
     int duration; // Thời lượng phim
     String status; // NOW_SHOWING, UPCOMING, ARCHIVED
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "tag_movie",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
+    @ManyToMany
     Set<Tag> tags;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "genre_movie",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
+    @ManyToMany
     Set<Genre> genres;
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    Set<ShowSchedule> showSchedules;
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    Set<Ticket> tickets;
 }

@@ -15,15 +15,14 @@ import java.util.Set;
 @Entity
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long itemId;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String itemName;
     String itemType; // POPCORN, DRINK
-    float itemPrice;
+    long itemPrice;
 
-    @ManyToMany(mappedBy = "items", cascade = CascadeType.ALL)
-    Set<Bill> bills;
+//    @ManyToMany
+//    Set<Bill> bills;
 
 //    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
 //    Set<BillItem> billItems;

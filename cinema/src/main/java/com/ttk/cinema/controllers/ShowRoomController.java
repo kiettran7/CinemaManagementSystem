@@ -1,13 +1,8 @@
 package com.ttk.cinema.controllers;
 
 import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.creation.GenreCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.ShowRoomCreationRequest;
-import com.ttk.cinema.DTOs.request.update.GenreUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.ShowRoomUpdateRequest;
-import com.ttk.cinema.DTOs.response.GenreResponse;
+import com.ttk.cinema.DTOs.request.ShowRoomRequest;
 import com.ttk.cinema.DTOs.response.ShowRoomResponse;
-import com.ttk.cinema.services.GenreService;
 import com.ttk.cinema.services.ShowRoomService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +19,14 @@ public class ShowRoomController {
     ShowRoomService showRoomService;
 
     @PostMapping
-    ApiResponse<ShowRoomResponse> createShowRoom(@RequestBody ShowRoomCreationRequest request) {
+    ApiResponse<ShowRoomResponse> createShowRoom(@RequestBody ShowRoomRequest request) {
         return ApiResponse.<ShowRoomResponse>builder()
                 .result(showRoomService.createShowRoom(request))
                 .build();
     }
 
     @GetMapping("/{showRoomId}")
-    ApiResponse<ShowRoomResponse> getShowRoom(@PathVariable Long showRoomId) {
+    ApiResponse<ShowRoomResponse> getShowRoom(@PathVariable String showRoomId) {
         return ApiResponse.<ShowRoomResponse>builder()
                 .result(showRoomService.getShowRoom(showRoomId))
                 .build();
@@ -45,15 +40,15 @@ public class ShowRoomController {
     }
 
     @PutMapping("/{showRoomId}")
-    ApiResponse<ShowRoomResponse> updateShowRoom(@PathVariable Long showRoomId,
-                                                 @RequestBody ShowRoomUpdateRequest request) {
+    ApiResponse<ShowRoomResponse> updateShowRoom(@PathVariable String showRoomId,
+                                                 @RequestBody ShowRoomRequest request) {
         return ApiResponse.<ShowRoomResponse>builder()
                 .result(showRoomService.updateShowRoom(showRoomId, request))
                 .build();
     }
 
     @DeleteMapping("/{showRoomId}")
-    ApiResponse<Void> deleteShowRoom(@PathVariable Long showRoomId) {
+    ApiResponse<Void> deleteShowRoom(@PathVariable String showRoomId) {
         showRoomService.deleteShowRoom(showRoomId);
         return ApiResponse.<Void>builder().build();
     }

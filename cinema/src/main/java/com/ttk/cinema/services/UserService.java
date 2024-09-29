@@ -1,9 +1,9 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.UserCreationRequest;
-import com.ttk.cinema.DTOs.request.update.UserUpdateRequest;
+import com.ttk.cinema.DTOs.request.UserCreationRequest;
+import com.ttk.cinema.DTOs.request.UserUpdateRequest;
 import com.ttk.cinema.DTOs.response.UserResponse;
-import com.ttk.cinema.enums.Role;
+import com.ttk.cinema.POJOs.Role;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
 import com.ttk.cinema.mappers.UserMapper;
@@ -34,7 +34,7 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final CloudinaryService cloudinaryService;
 
-    public UserResponse createUser(UserCreationRequest request, boolean isCustomer) throws IOException {
+    public UserResponse createUser(UserCreationRequest request) throws IOException {
         if (userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -44,17 +44,21 @@ public class UserService {
         if (request.getFile() != null && !request.getFile().isEmpty()) {
             user.setAvatar(cloudinaryService.uploadFile(request.getFile()));
         }
+
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        Set<com.ttk.cinema.POJOs.Role> roles = new HashSet<>();
-        com.ttk.cinema.POJOs.Role role;
-        if (isCustomer) {
-            role = this.roleRepository.findById("CUSTOMER").orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
-        } else {
-            role = this.roleRepository.findById("STAFF").orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
-        }
+        Set<Role> roles = new HashSet<>();
+        Role role;
+//        if (request.isCustomer()) {
+            role = this.roleRepository.findById("CUSTOMER")
+                    .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+//        } else {
+//            role = this.roleRepository.findById("STAFF")
+//                    .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+//        }
         roles.add(role);
         user.setRoles(roles);
+
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
@@ -67,7 +71,7 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    public UserResponse updateUser(Long userId, UserUpdateRequest request) throws IOException {
+    public UserResponse updateUser(String userId, UserUpdateRequest request) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -77,23 +81,24 @@ public class UserService {
             user.setAvatar(cloudinaryService.uploadFile(request.getFile()));
         }
 
-//        var roles = roleRepository.findAllById(request.getRoles());
-//        user.setRoles(new HashSet<>(roles));
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    public void deleteUser(Long userId){
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteUser(String userId){
         userRepository.deleteById(userId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public List<UserResponse> getUsers() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
-    public UserResponse getUser(Long userId){
+    public UserResponse getUser(String userId){
         return userMapper.toUserResponse(userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found")));
     }

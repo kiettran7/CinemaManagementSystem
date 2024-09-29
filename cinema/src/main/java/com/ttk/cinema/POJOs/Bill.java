@@ -15,26 +15,16 @@ import java.util.Set;
 @Entity
 public class Bill {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long billId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     float totalAmount;
     float customerPaid;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id")
     Promotion promotion;
 
-    @ManyToOne
-    @JoinColumn(name = "ticket_id")
-    Ticket ticket;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "bill_item",
-            joinColumns = @JoinColumn(name = "bill_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
+    @ManyToMany
     Set<Item> items;
 
 //    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)

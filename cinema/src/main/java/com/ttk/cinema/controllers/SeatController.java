@@ -1,13 +1,8 @@
 package com.ttk.cinema.controllers;
 
 import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.creation.GenreCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.SeatCreationRequest;
-import com.ttk.cinema.DTOs.request.update.GenreUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.SeatUpdateRequest;
-import com.ttk.cinema.DTOs.response.GenreResponse;
+import com.ttk.cinema.DTOs.request.SeatRequest;
 import com.ttk.cinema.DTOs.response.SeatResponse;
-import com.ttk.cinema.services.GenreService;
 import com.ttk.cinema.services.SeatService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +19,14 @@ public class SeatController {
     SeatService seatService;
 
     @PostMapping
-    ApiResponse<SeatResponse> createSeat(@RequestBody SeatCreationRequest request) {
+    ApiResponse<SeatResponse> createSeat(@RequestBody SeatRequest request) {
         return ApiResponse.<SeatResponse>builder()
                 .result(seatService.createSeat(request))
                 .build();
     }
 
     @GetMapping("/{seatId}")
-    ApiResponse<SeatResponse> getSeat(@PathVariable Long seatId) {
+    ApiResponse<SeatResponse> getSeat(@PathVariable String seatId) {
         return ApiResponse.<SeatResponse>builder()
                 .result(seatService.getSeat(seatId))
                 .build();
@@ -45,15 +40,15 @@ public class SeatController {
     }
 
     @PutMapping("/{seatId}")
-    ApiResponse<SeatResponse> updateSeat(@PathVariable Long seatId,
-                                         @RequestBody SeatUpdateRequest request) {
+    ApiResponse<SeatResponse> updateSeat(@PathVariable String seatId,
+                                         @RequestBody SeatRequest request) {
         return ApiResponse.<SeatResponse>builder()
                 .result(seatService.updateSeat(seatId, request))
                 .build();
     }
 
     @DeleteMapping("/{seatId}")
-    ApiResponse<Void> deleteSeat(@PathVariable Long seatId) {
+    ApiResponse<Void> deleteSeat(@PathVariable String seatId) {
         seatService.deleteSeat(seatId);
         return ApiResponse.<Void>builder().build();
     }

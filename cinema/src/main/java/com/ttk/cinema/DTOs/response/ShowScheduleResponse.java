@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShowScheduleResponse {
-    Long showScheduleId;
+    String id;
     LocalDate showDate;
     MovieResponse movie; // Liên kết với movie
 }

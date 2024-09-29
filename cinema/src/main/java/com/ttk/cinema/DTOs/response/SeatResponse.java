@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SeatResponse {
-    Long seatId;
+    String id;
     String seatName;
     ShowRoomResponse showRoom; // Liên kết với show_room
 }

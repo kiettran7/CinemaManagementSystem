@@ -1,12 +1,15 @@
 package com.ttk.cinema.DTOs.request;
 
+import com.ttk.cinema.validators.DobConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,6 +31,7 @@ public class UserCreationRequest {
     @NotBlank(message = "Full name must not null")
     String fullName;
 
+    @DobConstraint(min = 18, message = "INVALID_DOB")
     LocalDate birthday;
-    String avatar;
+    MultipartFile file;
 }

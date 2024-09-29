@@ -1,22 +1,16 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.MovieCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.PromotionCreationRequest;
-import com.ttk.cinema.DTOs.request.update.MovieUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.PromotionUpdateRequest;
-import com.ttk.cinema.DTOs.response.MovieResponse;
+import com.ttk.cinema.DTOs.request.PromotionRequest;
 import com.ttk.cinema.DTOs.response.PromotionResponse;
-import com.ttk.cinema.POJOs.Movie;
 import com.ttk.cinema.POJOs.Promotion;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
-import com.ttk.cinema.mappers.MovieMapper;
 import com.ttk.cinema.mappers.PromotionMapper;
-import com.ttk.cinema.repositories.MovieRepository;
 import com.ttk.cinema.repositories.PromotionRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +22,14 @@ public class PromotionService {
     PromotionRepository promotionRepository;
     PromotionMapper promotionMapper;
 
-    public PromotionResponse createPromotion(PromotionCreationRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public PromotionResponse createPromotion(PromotionRequest request) {
         Promotion promotion = promotionMapper.toPromotion(request);
-        promotion = promotionRepository.save(promotion);
-        return promotionMapper.toPromotionResponse(promotion);
+
+        return promotionMapper.toPromotionResponse(promotionRepository.save(promotion));
     }
 
-    public PromotionResponse getPromotion(Long promotionId) {
+    public PromotionResponse getPromotion(String promotionId) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_FOUND));
         return promotionMapper.toPromotionResponse(promotion);
@@ -46,18 +41,20 @@ public class PromotionService {
                 .toList();
     }
 
-    public void deletePromotion(Long promotionId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deletePromotion(String promotionId) {
         if (!promotionRepository.existsById(promotionId)) {
             throw new AppException(ErrorCode.PROMOTION_NOT_FOUND);
         }
         promotionRepository.deleteById(promotionId);
     }
 
-    public PromotionResponse updatePromotion(Long promotionId, PromotionUpdateRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public PromotionResponse updatePromotion(String promotionId, PromotionRequest request) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_FOUND));
         promotionMapper.updatePromotion(promotion, request);
-        promotion = promotionRepository.save(promotion);
-        return promotionMapper.toPromotionResponse(promotion);
+
+        return promotionMapper.toPromotionResponse(promotionRepository.save(promotion));
     }
 }

@@ -1,21 +1,17 @@
 package com.ttk.cinema.controllers;
 
 import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.creation.UserCreationRequest;
-import com.ttk.cinema.DTOs.request.update.UserUpdateRequest;
+import com.ttk.cinema.DTOs.request.UserCreationRequest;
+import com.ttk.cinema.DTOs.request.UserUpdateRequest;
 import com.ttk.cinema.DTOs.response.UserResponse;
-import com.ttk.cinema.POJOs.User;
 import com.ttk.cinema.services.CloudinaryService;
 import com.ttk.cinema.services.UserService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +30,7 @@ public class UserController {
         logger.info("POST request to /users");
 
         return ApiResponse.<UserResponse>builder()
-                .result(userService.createUser(request, true))
+                .result(userService.createUser(request))
                 .build();
     }
 
@@ -49,7 +45,7 @@ public class UserController {
     @GetMapping("/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId) {
         return ApiResponse.<UserResponse>builder()
-                .result(userService.getUser(Long.parseLong(userId)))
+                .result(userService.getUser(userId))
                 .build();
     }
 
@@ -64,13 +60,13 @@ public class UserController {
     ApiResponse<UserResponse> updateUser(@PathVariable String userId,
                                          @ModelAttribute UserUpdateRequest request) throws IOException {
         return ApiResponse.<UserResponse>builder()
-                .result(userService.updateUser(Long.parseLong(userId), request))
+                .result(userService.updateUser(userId, request))
                 .build();
     }
 
     @DeleteMapping("/{userId}")
     ApiResponse<String> deleteUser(@PathVariable String userId) {
-        userService.deleteUser(Long.parseLong(userId));
+        userService.deleteUser(userId);
         return ApiResponse.<String>builder()
                 .result("User has been deleted")
                 .build();

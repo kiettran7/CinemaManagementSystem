@@ -15,10 +15,7 @@ import java.util.Set;
 @Entity
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long tagId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String tagName;
-
-    @ManyToMany(mappedBy = "tags")
-    Set<Movie> movies;
 }

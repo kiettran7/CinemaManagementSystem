@@ -1,22 +1,16 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.MovieCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.TagCreationRequest;
-import com.ttk.cinema.DTOs.request.update.MovieUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.TagUpdateRequest;
-import com.ttk.cinema.DTOs.response.MovieResponse;
+import com.ttk.cinema.DTOs.request.TagRequest;
 import com.ttk.cinema.DTOs.response.TagResponse;
-import com.ttk.cinema.POJOs.Movie;
 import com.ttk.cinema.POJOs.Tag;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
-import com.ttk.cinema.mappers.MovieMapper;
 import com.ttk.cinema.mappers.TagMapper;
-import com.ttk.cinema.repositories.MovieRepository;
 import com.ttk.cinema.repositories.TagRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +22,14 @@ public class TagService {
     TagRepository tagRepository;
     TagMapper tagMapper;
 
-    public TagResponse createTag(TagCreationRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public TagResponse createTag(TagRequest request) {
         Tag tag = tagMapper.toTag(request);
-        tag = tagRepository.save(tag);
-        return tagMapper.toTagResponse(tag);
+
+        return tagMapper.toTagResponse(tagRepository.save(tag));
     }
 
-    public TagResponse getTag(Long tagId) {
+    public TagResponse getTag(String tagId) {
         Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new AppException(ErrorCode.TAG_NOT_FOUND));
         return tagMapper.toTagResponse(tag);
@@ -46,18 +41,21 @@ public class TagService {
                 .toList();
     }
 
-    public void deleteTag(Long tagId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteTag(String tagId) {
         if (!tagRepository.existsById(tagId)) {
             throw new AppException(ErrorCode.TAG_NOT_FOUND);
         }
         tagRepository.deleteById(tagId);
     }
 
-    public TagResponse updateTag(Long tagId, TagUpdateRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public TagResponse updateTag(String tagId, TagRequest request) {
         Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new AppException(ErrorCode.TAG_NOT_FOUND));
+
         tagMapper.updateTag(tag, request);
-        tag = tagRepository.save(tag);
-        return tagMapper.toTagResponse(tag);
+
+        return tagMapper.toTagResponse(tagRepository.save(tag));
     }
 }

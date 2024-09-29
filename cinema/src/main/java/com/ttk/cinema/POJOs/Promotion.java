@@ -15,13 +15,12 @@ import java.util.Set;
 @Entity
 public class Promotion {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long promotionId;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String promotionName;
     float discountValue;
 
 
-    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
-    Set<Bill> bills;
+//    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
+//    Set<Bill> bills;
 }

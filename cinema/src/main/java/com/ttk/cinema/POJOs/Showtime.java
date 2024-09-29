@@ -15,12 +15,12 @@ import java.util.Set;
 @Entity
 public class Showtime {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long showtimeId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     String startTime;
     String endTime;
 
-    @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
-    Set<ShowEvent> showEvents;
+//    @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
+//    Set<ShowEvent> showEvents;
 }

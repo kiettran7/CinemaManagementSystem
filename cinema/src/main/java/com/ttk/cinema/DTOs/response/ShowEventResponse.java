@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShowEventResponse {
-    long showId;
+    String id;
     ShowtimeResponse showtime;  // Liên kết với showtime
     ShowRoomResponse showRoom;   // Liên kết với show room
 }

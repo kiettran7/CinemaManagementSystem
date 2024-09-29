@@ -1,7 +1,6 @@
 package com.ttk.cinema.mappers;
 
-import com.ttk.cinema.DTOs.request.creation.MovieCreationRequest;
-import com.ttk.cinema.DTOs.request.update.MovieUpdateRequest;
+import com.ttk.cinema.DTOs.request.MovieRequest;
 import com.ttk.cinema.DTOs.response.MovieResponse;
 import com.ttk.cinema.POJOs.Movie;
 import org.mapstruct.Mapper;
@@ -12,11 +11,11 @@ import org.mapstruct.MappingTarget;
 public interface MovieMapper {
     @Mapping(target = "genres", ignore = true)
     @Mapping(target = "tags", ignore = true)
-    Movie toMovie(MovieCreationRequest request);
+    Movie toMovie(MovieRequest request);
 
     MovieResponse toMovieResponse(Movie movie);
 
     @Mapping(target = "genres", ignore = true)
     @Mapping(target = "tags", ignore = true)
-    void updateMovie(@MappingTarget Movie movie, MovieUpdateRequest request);
+    void updateMovie(@MappingTarget Movie movie, MovieRequest request);
 }

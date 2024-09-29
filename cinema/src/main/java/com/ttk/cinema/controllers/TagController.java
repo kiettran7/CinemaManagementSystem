@@ -1,13 +1,8 @@
 package com.ttk.cinema.controllers;
 
 import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.creation.GenreCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.TagCreationRequest;
-import com.ttk.cinema.DTOs.request.update.GenreUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.TagUpdateRequest;
-import com.ttk.cinema.DTOs.response.GenreResponse;
+import com.ttk.cinema.DTOs.request.TagRequest;
 import com.ttk.cinema.DTOs.response.TagResponse;
-import com.ttk.cinema.services.GenreService;
 import com.ttk.cinema.services.TagService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +19,14 @@ public class TagController {
     TagService tagService;
 
     @PostMapping
-    ApiResponse<TagResponse> createTag(@RequestBody TagCreationRequest request) {
+    ApiResponse<TagResponse> createTag(@RequestBody TagRequest request) {
         return ApiResponse.<TagResponse>builder()
                 .result(tagService.createTag(request))
                 .build();
     }
 
     @GetMapping("/{tagId}")
-    ApiResponse<TagResponse> getTag(@PathVariable Long tagId) {
+    ApiResponse<TagResponse> getTag(@PathVariable String tagId) {
         return ApiResponse.<TagResponse>builder()
                 .result(tagService.getTag(tagId))
                 .build();
@@ -45,15 +40,15 @@ public class TagController {
     }
 
     @PutMapping("/{tagId}")
-    ApiResponse<TagResponse> updateTag(@PathVariable Long tagId,
-                                       @RequestBody TagUpdateRequest request) {
+    ApiResponse<TagResponse> updateTag(@PathVariable String tagId,
+                                       @RequestBody TagRequest request) {
         return ApiResponse.<TagResponse>builder()
                 .result(tagService.updateTag(tagId, request))
                 .build();
     }
 
     @DeleteMapping("/{tagId}")
-    ApiResponse<Void> deleteTag(@PathVariable Long tagId) {
+    ApiResponse<Void> deleteTag(@PathVariable String tagId) {
         tagService.deleteTag(tagId);
         return ApiResponse.<Void>builder().build();
     }

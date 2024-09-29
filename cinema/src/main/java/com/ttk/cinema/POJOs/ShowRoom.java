@@ -15,14 +15,7 @@ import java.util.Set;
 @Entity
 public class ShowRoom {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long showRoomId;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String showRoomName;
-
-    @OneToMany(mappedBy = "showRoom", cascade = CascadeType.ALL)
-    Set<ShowEvent> shows;
-
-    @OneToMany(mappedBy = "showRoom", cascade = CascadeType.ALL)
-    Set<Seat> seats;
 }

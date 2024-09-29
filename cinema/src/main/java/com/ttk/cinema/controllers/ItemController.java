@@ -1,13 +1,8 @@
 package com.ttk.cinema.controllers;
 
 import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.creation.BillCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.ItemCreationRequest;
-import com.ttk.cinema.DTOs.request.update.BillUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.ItemUpdateRequest;
-import com.ttk.cinema.DTOs.response.BillResponse;
+import com.ttk.cinema.DTOs.request.ItemRequest;
 import com.ttk.cinema.DTOs.response.ItemResponse;
-import com.ttk.cinema.services.BillService;
 import com.ttk.cinema.services.ItemService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +19,14 @@ public class ItemController {
     ItemService itemService;
 
     @PostMapping
-    ApiResponse<ItemResponse> createItem(@RequestBody ItemCreationRequest request) {
+    ApiResponse<ItemResponse> createItem(@RequestBody ItemRequest request) {
         return ApiResponse.<ItemResponse>builder()
                 .result(itemService.createItem(request))
                 .build();
     }
 
     @GetMapping("/{itemId}")
-    ApiResponse<ItemResponse> getItem(@PathVariable Long itemId) {
+    ApiResponse<ItemResponse> getItem(@PathVariable String itemId) {
         return ApiResponse.<ItemResponse>builder()
                 .result(itemService.getItem(itemId))
                 .build();
@@ -45,15 +40,15 @@ public class ItemController {
     }
 
     @PutMapping("/{itemId}")
-    ApiResponse<ItemResponse> updateItem(@PathVariable Long itemId,
-                                         @RequestBody ItemUpdateRequest request) {
+    ApiResponse<ItemResponse> updateItem(@PathVariable String itemId,
+                                         @RequestBody ItemRequest request) {
         return ApiResponse.<ItemResponse>builder()
                 .result(itemService.updateItem(itemId, request))
                 .build();
     }
 
     @DeleteMapping("/{itemId}")
-    ApiResponse<Void> deleteItem(@PathVariable Long itemId) {
+    ApiResponse<Void> deleteItem(@PathVariable String itemId) {
         itemService.deleteItem(itemId);
         return ApiResponse.<Void>builder().build();
     }

@@ -1,7 +1,7 @@
 package com.ttk.cinema.mappers;
 
-import com.ttk.cinema.DTOs.request.creation.UserCreationRequest;
-import com.ttk.cinema.DTOs.request.update.UserUpdateRequest;
+import com.ttk.cinema.DTOs.request.UserCreationRequest;
+import com.ttk.cinema.DTOs.request.UserUpdateRequest;
 import com.ttk.cinema.DTOs.response.UserResponse;
 import com.ttk.cinema.POJOs.User;
 import org.mapstruct.Mapper;

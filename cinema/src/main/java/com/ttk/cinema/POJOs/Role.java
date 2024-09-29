@@ -19,14 +19,9 @@ public class Role {
     String name;
     String description;
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    Set<User> users;
+//    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+//    Set<User> users;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "role_permissions",
-            joinColumns = @JoinColumn(name = "role_name"),
-            inverseJoinColumns = @JoinColumn(name = "permissions_name")
-    )
+    @ManyToMany
     Set<Permission> permissions;
 }

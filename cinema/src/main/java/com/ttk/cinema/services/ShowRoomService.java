@@ -1,22 +1,16 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.GenreCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.ShowRoomCreationRequest;
-import com.ttk.cinema.DTOs.request.update.GenreUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.ShowRoomUpdateRequest;
-import com.ttk.cinema.DTOs.response.GenreResponse;
+import com.ttk.cinema.DTOs.request.ShowRoomRequest;
 import com.ttk.cinema.DTOs.response.ShowRoomResponse;
-import com.ttk.cinema.POJOs.Genre;
 import com.ttk.cinema.POJOs.ShowRoom;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
-import com.ttk.cinema.mappers.GenreMapper;
 import com.ttk.cinema.mappers.ShowRoomMapper;
-import com.ttk.cinema.repositories.GenreRepository;
 import com.ttk.cinema.repositories.ShowRoomRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +22,14 @@ public class ShowRoomService {
     ShowRoomRepository showRoomRepository;
     ShowRoomMapper showRoomMapper;
 
-    public ShowRoomResponse createShowRoom(ShowRoomCreationRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ShowRoomResponse createShowRoom(ShowRoomRequest request) {
         ShowRoom showRoom = showRoomMapper.toShowRoom(request);
-        showRoom = showRoomRepository.save(showRoom);
-        return showRoomMapper.toShowRoomResponse(showRoom);
+
+        return showRoomMapper.toShowRoomResponse(showRoomRepository.save(showRoom));
     }
 
-    public ShowRoomResponse getShowRoom(Long showRoomId) {
+    public ShowRoomResponse getShowRoom(String showRoomId) {
         ShowRoom showRoom = showRoomRepository.findById(showRoomId)
                 .orElseThrow(() -> new AppException(ErrorCode.SHOW_ROOM_NOT_FOUND));
         return showRoomMapper.toShowRoomResponse(showRoom);
@@ -46,18 +41,20 @@ public class ShowRoomService {
                 .toList();
     }
 
-    public void deleteShowRoom(Long showRoomId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteShowRoom(String showRoomId) {
         if (!showRoomRepository.existsById(showRoomId)) {
             throw new AppException(ErrorCode.SHOW_ROOM_NOT_FOUND);
         }
         showRoomRepository.deleteById(showRoomId);
     }
 
-    public ShowRoomResponse updateShowRoom(Long showRoomId, ShowRoomUpdateRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ShowRoomResponse updateShowRoom(String showRoomId, ShowRoomRequest request) {
         ShowRoom showRoom = showRoomRepository.findById(showRoomId)
                 .orElseThrow(() -> new AppException(ErrorCode.SHOW_ROOM_NOT_FOUND));
         showRoomMapper.updateShowRoom(showRoom, request);
-        showRoom = showRoomRepository.save(showRoom);
-        return showRoomMapper.toShowRoomResponse(showRoom);
+
+        return showRoomMapper.toShowRoomResponse(showRoomRepository.save(showRoom));
     }
 }

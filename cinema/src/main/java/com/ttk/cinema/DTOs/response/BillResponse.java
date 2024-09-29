@@ -11,10 +11,9 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BillResponse {
-    Long billId;
+    String id;
     Float totalAmount;
     Float customerPaid;
-    PromotionResponse promotionId; // Liên kết với promotion
-    TicketResponse ticketId;       // Liên kết với ticket
+    PromotionResponse promotion; // Liên kết với promotion
     Set<ItemResponse> items;
 }

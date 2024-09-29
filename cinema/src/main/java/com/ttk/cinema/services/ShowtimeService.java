@@ -1,22 +1,16 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.MovieCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.ShowtimeCreationRequest;
-import com.ttk.cinema.DTOs.request.update.MovieUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.ShowtimeUpdateRequest;
-import com.ttk.cinema.DTOs.response.MovieResponse;
+import com.ttk.cinema.DTOs.request.ShowtimeRequest;
 import com.ttk.cinema.DTOs.response.ShowtimeResponse;
-import com.ttk.cinema.POJOs.Movie;
 import com.ttk.cinema.POJOs.Showtime;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
-import com.ttk.cinema.mappers.MovieMapper;
 import com.ttk.cinema.mappers.ShowtimeMapper;
-import com.ttk.cinema.repositories.MovieRepository;
 import com.ttk.cinema.repositories.ShowtimeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +22,14 @@ public class ShowtimeService {
     ShowtimeRepository showtimeRepository;
     ShowtimeMapper showtimeMapper;
 
-    public ShowtimeResponse createShowtime(ShowtimeCreationRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ShowtimeResponse createShowtime(ShowtimeRequest request) {
         Showtime showtime = showtimeMapper.toShowtime(request);
-        showtime = showtimeRepository.save(showtime);
-        return showtimeMapper.toShowtimeResponse(showtime);
+
+        return showtimeMapper.toShowtimeResponse(showtimeRepository.save(showtime));
     }
 
-    public ShowtimeResponse getShowtime(Long showtimeId) {
+    public ShowtimeResponse getShowtime(String showtimeId) {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
         return showtimeMapper.toShowtimeResponse(showtime);
@@ -46,18 +41,21 @@ public class ShowtimeService {
                 .toList();
     }
 
-    public void deleteShowtime(Long showtimeId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteShowtime(String showtimeId) {
         if (!showtimeRepository.existsById(showtimeId)) {
             throw new AppException(ErrorCode.SHOWTIME_NOT_FOUND);
         }
         showtimeRepository.deleteById(showtimeId);
     }
 
-    public ShowtimeResponse updateShowtime(Long showtimeId, ShowtimeUpdateRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ShowtimeResponse updateShowtime(String showtimeId, ShowtimeRequest request) {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new AppException(ErrorCode.SHOWTIME_NOT_FOUND));
+
         showtimeMapper.updateShowtime(showtime, request);
-        showtime = showtimeRepository.save(showtime);
-        return showtimeMapper.toShowtimeResponse(showtime);
+
+        return showtimeMapper.toShowtimeResponse(showtimeRepository.save(showtime));
     }
 }

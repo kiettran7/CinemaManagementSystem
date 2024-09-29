@@ -12,6 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TagResponse {
-    Long tagId;
+    String id;
     String tagName;
 }

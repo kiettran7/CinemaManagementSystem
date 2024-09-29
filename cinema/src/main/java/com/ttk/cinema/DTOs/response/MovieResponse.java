@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MovieResponse {
-    long movieId;
+    String id;
     String movieImage;
     String movieName;
     float moviePrice;

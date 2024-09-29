@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,20 +16,21 @@ import java.time.LocalDateTime;
 @Entity
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long ticketId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     float ticketPrice;
-    LocalDateTime createdDate;
+    LocalDate createdDate;
     String status; // PENDING, PAID, CANCELLED
     String bookingType; // PRE-BOOKED, WALK-IN
 
     @ManyToOne
-    @JoinColumn(name = "show_id")
-    ShowEvent show;
+    ShowEvent showEvent;
 
     @ManyToOne
-    @JoinColumn(name = "seat_id")
+    Bill bill;
+
+    @ManyToOne
     Seat seat;
 
     @ManyToOne
@@ -40,6 +42,10 @@ public class Ticket {
     User staff;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id")
     Movie movie;
+
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDate.now();
+    }
 }

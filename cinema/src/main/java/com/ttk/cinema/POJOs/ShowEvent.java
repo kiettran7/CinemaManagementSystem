@@ -13,14 +13,12 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class ShowEvent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long showId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     @ManyToOne
-    @JoinColumn(name = "showtime_id")
     Showtime showtime;
 
     @ManyToOne
-    @JoinColumn(name = "show_room_id")
     ShowRoom showRoom;
 }

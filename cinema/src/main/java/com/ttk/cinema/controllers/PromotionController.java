@@ -1,13 +1,8 @@
 package com.ttk.cinema.controllers;
 
 import com.ttk.cinema.DTOs.request.ApiResponse;
-import com.ttk.cinema.DTOs.request.creation.GenreCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.PromotionCreationRequest;
-import com.ttk.cinema.DTOs.request.update.GenreUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.PromotionUpdateRequest;
-import com.ttk.cinema.DTOs.response.GenreResponse;
+import com.ttk.cinema.DTOs.request.PromotionRequest;
 import com.ttk.cinema.DTOs.response.PromotionResponse;
-import com.ttk.cinema.services.GenreService;
 import com.ttk.cinema.services.PromotionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +19,14 @@ public class PromotionController {
     PromotionService promotionService;
 
     @PostMapping
-    ApiResponse<PromotionResponse> createPromotion(@RequestBody PromotionCreationRequest request) {
+    ApiResponse<PromotionResponse> createPromotion(@RequestBody PromotionRequest request) {
         return ApiResponse.<PromotionResponse>builder()
                 .result(promotionService.createPromotion(request))
                 .build();
     }
 
     @GetMapping("/{promotionId}")
-    ApiResponse<PromotionResponse> getPromotion(@PathVariable Long promotionId) {
+    ApiResponse<PromotionResponse> getPromotion(@PathVariable String promotionId) {
         return ApiResponse.<PromotionResponse>builder()
                 .result(promotionService.getPromotion(promotionId))
                 .build();
@@ -45,15 +40,15 @@ public class PromotionController {
     }
 
     @PutMapping("/{promotionId}")
-    ApiResponse<PromotionResponse> updatePromotion(@PathVariable Long promotionId,
-                                                   @RequestBody PromotionUpdateRequest request) {
+    ApiResponse<PromotionResponse> updatePromotion(@PathVariable String promotionId,
+                                                   @RequestBody PromotionRequest request) {
         return ApiResponse.<PromotionResponse>builder()
                 .result(promotionService.updatePromotion(promotionId, request))
                 .build();
     }
 
     @DeleteMapping("/{promotionId}")
-    ApiResponse<Void> deletePromotion(@PathVariable Long promotionId) {
+    ApiResponse<Void> deletePromotion(@PathVariable String promotionId) {
         promotionService.deletePromotion(promotionId);
         return ApiResponse.<Void>builder().build();
     }

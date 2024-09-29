@@ -15,12 +15,11 @@ import java.time.LocalDate;
 @Entity
 public class ShowSchedule {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long showScheduleId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     LocalDate showDate;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id")
     Movie movie;
 }
 

@@ -15,10 +15,7 @@ import java.util.Set;
 @Entity
 public class Genre {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long genreId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String genreName;
-
-    @ManyToMany(mappedBy = "genres")
-    Set<Movie> movies;
 }

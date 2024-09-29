@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PromotionResponse {
-    Long promotionId;
+    String id;
     String promotionName;
     Float discountValue;
 }

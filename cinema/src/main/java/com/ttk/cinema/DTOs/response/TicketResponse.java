@@ -11,14 +11,15 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TicketResponse {
-    Long ticketId;
+    String id;
     Float ticketPrice;
     LocalDateTime createdDate;
     String status;
     String bookingType;
-    ShowEventResponse show; // Liên kết với show_event
+    ShowEventResponse showEvent; // Liên kết với show_event
     SeatResponse seat;      // Liên kết với seat
     UserResponse customer;  // Liên kết với user
     UserResponse staff;     // Liên kết với user
     MovieResponse movie;    // Liên kết với movie
+    BillResponse bill;    // Liên kết với movie
 }

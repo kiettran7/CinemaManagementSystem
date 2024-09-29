@@ -1,8 +1,8 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.ShowScheduleCreationRequest;
-import com.ttk.cinema.DTOs.request.update.ShowScheduleUpdateRequest;
+import com.ttk.cinema.DTOs.request.ShowScheduleRequest;
 import com.ttk.cinema.DTOs.response.ShowScheduleResponse;
+import com.ttk.cinema.POJOs.Movie;
 import com.ttk.cinema.POJOs.ShowSchedule;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
@@ -12,6 +12,7 @@ import com.ttk.cinema.repositories.ShowScheduleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,18 +25,18 @@ public class ShowScheduleService {
     ShowScheduleMapper showScheduleMapper;
     MovieRepository movieRepository;
 
-    public ShowScheduleResponse createShowSchedule(ShowScheduleCreationRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ShowScheduleResponse createShowSchedule(ShowScheduleRequest request) {
         ShowSchedule showSchedule = showScheduleMapper.toShowSchedule(request);
 
-        // Kiểm tra movieId có tồn tại không
-        movieRepository.findById(request.getMovieId())
+        Movie movie = movieRepository.findById(request.getMovie())
                 .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_FOUND));
+        showSchedule.setMovie(movie);
 
-        showSchedule = showScheduleRepository.save(showSchedule);
-        return showScheduleMapper.toShowScheduleResponse(showSchedule);
+        return showScheduleMapper.toShowScheduleResponse(showScheduleRepository.save(showSchedule));
     }
 
-    public ShowScheduleResponse getShowSchedule(Long showScheduleId) {
+    public ShowScheduleResponse getShowSchedule(String showScheduleId) {
         ShowSchedule showSchedule = showScheduleRepository.findById(showScheduleId)
                 .orElseThrow(() -> new AppException(ErrorCode.SHOW_SCHEDULE_NOT_FOUND));
         return showScheduleMapper.toShowScheduleResponse(showSchedule);
@@ -47,18 +48,25 @@ public class ShowScheduleService {
                 .toList();
     }
 
-    public void deleteShowSchedule(Long showScheduleId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteShowSchedule(String showScheduleId) {
         if (!showScheduleRepository.existsById(showScheduleId)) {
             throw new AppException(ErrorCode.SHOW_SCHEDULE_NOT_FOUND);
         }
         showScheduleRepository.deleteById(showScheduleId);
     }
 
-    public ShowScheduleResponse updateShowSchedule(Long showScheduleId, ShowScheduleUpdateRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ShowScheduleResponse updateShowSchedule(String showScheduleId, ShowScheduleRequest request) {
         ShowSchedule showSchedule = showScheduleRepository.findById(showScheduleId)
                 .orElseThrow(() -> new AppException(ErrorCode.SHOW_SCHEDULE_NOT_FOUND));
+
         showScheduleMapper.updateShowSchedule(showSchedule, request);
-        showSchedule = showScheduleRepository.save(showSchedule);
-        return showScheduleMapper.toShowScheduleResponse(showSchedule);
+
+        Movie movie = movieRepository.findById(request.getMovie())
+                .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_FOUND));
+        showSchedule.setMovie(movie);
+
+        return showScheduleMapper.toShowScheduleResponse(showScheduleRepository.save(showSchedule));
     }
 }

@@ -1,23 +1,18 @@
 package com.ttk.cinema.services;
 
-import com.ttk.cinema.DTOs.request.creation.MovieCreationRequest;
-import com.ttk.cinema.DTOs.request.creation.SeatCreationRequest;
-import com.ttk.cinema.DTOs.request.update.MovieUpdateRequest;
-import com.ttk.cinema.DTOs.request.update.SeatUpdateRequest;
-import com.ttk.cinema.DTOs.response.MovieResponse;
+import com.ttk.cinema.DTOs.request.SeatRequest;
 import com.ttk.cinema.DTOs.response.SeatResponse;
-import com.ttk.cinema.POJOs.Movie;
 import com.ttk.cinema.POJOs.Seat;
+import com.ttk.cinema.POJOs.ShowRoom;
 import com.ttk.cinema.exceptions.AppException;
 import com.ttk.cinema.exceptions.ErrorCode;
-import com.ttk.cinema.mappers.MovieMapper;
 import com.ttk.cinema.mappers.SeatMapper;
-import com.ttk.cinema.repositories.MovieRepository;
 import com.ttk.cinema.repositories.SeatRepository;
 import com.ttk.cinema.repositories.ShowRoomRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,17 +25,18 @@ public class SeatService {
     SeatMapper seatMapper;
     ShowRoomRepository showRoomRepository;
 
-    public SeatResponse createSeat(SeatCreationRequest request) {
-        // Kiểm tra showRoomId có tồn tại không
-        showRoomRepository.findById(request.getShowRoomId())
-                .orElseThrow(() -> new AppException(ErrorCode.SHOW_ROOM_NOT_FOUND));
-
+    @PreAuthorize("hasRole('ADMIN')")
+    public SeatResponse createSeat(SeatRequest request) {
         Seat seat = seatMapper.toSeat(request);
-        seat = seatRepository.save(seat);
-        return seatMapper.toSeatResponse(seat);
+
+        ShowRoom showRoom = showRoomRepository.findById(request.getShowRoom())
+                .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_FOUND));
+        seat.setShowRoom(showRoom);
+
+        return seatMapper.toSeatResponse(seatRepository.save(seat));
     }
 
-    public SeatResponse getSeat(Long seatId) {
+    public SeatResponse getSeat(String seatId) {
         Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
         return seatMapper.toSeatResponse(seat);
@@ -52,19 +48,25 @@ public class SeatService {
                 .toList();
     }
 
-    public void deleteSeat(Long seatId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteSeat(String seatId) {
         if (!seatRepository.existsById(seatId)) {
             throw new AppException(ErrorCode.SEAT_NOT_FOUND);
         }
         seatRepository.deleteById(seatId);
     }
 
-    public SeatResponse updateSeat(Long seatId, SeatUpdateRequest request) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public SeatResponse updateSeat(String seatId, SeatRequest request) {
         Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEAT_NOT_FOUND));
 
+        ShowRoom showRoom = showRoomRepository.findById(request.getShowRoom())
+                .orElseThrow(() -> new AppException(ErrorCode.SHOW_ROOM_NOT_FOUND));
+        seat.setShowRoom(showRoom);
+
         seatMapper.updateSeat(seat, request);
-        seat = seatRepository.save(seat);
-        return seatMapper.toSeatResponse(seat);
+
+        return seatMapper.toSeatResponse(seatRepository.save(seat));
     }
 }

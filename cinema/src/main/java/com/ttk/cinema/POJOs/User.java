@@ -18,8 +18,8 @@ import java.util.Set;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long userId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String userId;
     String username;
     String password;
     String email;
@@ -33,12 +33,7 @@ public class User {
     @JsonIgnore
     MultipartFile file;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_name")
-    )
+    @ManyToMany
     Set<Role> roles;
 
     @PrePersist

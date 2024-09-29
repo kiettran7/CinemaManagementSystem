@@ -20,7 +20,4 @@ public class Permission {
     @Id
     String name;
     String description;
-
-    @ManyToMany(mappedBy = "permissions", cascade = CascadeType.ALL)
-    Set<Role> roles;
 }

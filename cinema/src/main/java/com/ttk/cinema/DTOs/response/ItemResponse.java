@@ -9,7 +9,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemResponse {
-    Long itemId;
+    String id;
     String itemName;
-    Float itemPrice;
+    String itemType;;
+
+    long itemPrice;
 }

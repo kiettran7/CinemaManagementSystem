@@ -15,15 +15,10 @@ import java.util.Set;
 @Entity
 public class Seat {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long seatId;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
     String seatName;
 
     @ManyToOne
-    @JoinColumn(name = "show_room_id")
     ShowRoom showRoom;
-
-//    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
-//    Set<SeatReservation> seatReservations;
 }

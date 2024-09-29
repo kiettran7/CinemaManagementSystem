@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Repository
 @Transactional
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
     boolean existsByUsername(String username);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
