@@ -11,6 +11,8 @@ export const endpoints = {
     'seats': '/seats',
     'items': '/items',
     'promotions': '/promotions',
+    'create-tickets': '/tickets',
+    'create-bill': '/bills',
 }
 
 export const auThApi = (accessToken)=> axios.create({

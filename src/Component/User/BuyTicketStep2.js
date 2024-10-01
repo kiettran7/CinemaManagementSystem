@@ -26,7 +26,7 @@ function BuyTicketStep2() {
             const data = res.data.result
 
             if (Array.isArray(data)) {
-                const seatOfRoom = data.filter((s) => s.showRoom.showRoomName === ticketInfo.room.showRoomName);
+                const seatOfRoom = data.filter((s) => s.showRoom.showRoomName === ticketInfo.showEvent.showRoom.showRoomName);
                 setSeats(seatOfRoom);
                 localStorage.setItem('seatOfRoom', JSON.stringify(seatOfRoom));
             } else {

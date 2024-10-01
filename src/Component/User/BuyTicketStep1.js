@@ -17,15 +17,24 @@ function BuyTicketStep1() {
     
     const formattedDate = selectedDate ? selectedDate.format('YYYY-MM-DD') : null;
 
-    const goStep2 = (schedule, time, room) => {
+    const goStep2 = (showEvent) => {
         setTicketInfo({
-            schedule,
-            time,
-            room,
+            showEvent,
         });
         nextStep(selectedMovie);
         setIsActiveTimer(true);
     }
+
+    // const goStep2 = (schedule, time, room, showEvent) => {
+    //     setTicketInfo({
+    //         schedule,
+    //         time,
+    //         room,
+    //         showEvent,
+    //     });
+    //     nextStep(selectedMovie);
+    //     setIsActiveTimer(true);
+    // }
 
     const getFilteredShowTimes = () => {
         if (!formattedDate || !selectedMovie) return [];
@@ -33,6 +42,7 @@ function BuyTicketStep1() {
         return selectedMovie.showEvents
             .filter((show) => dayjs(show.showSchedule.showDate).isSame(dayjs(formattedDate), 'day'))
             .map((show) => ({
+                showEvent: show,
                 schedule: show.showSchedule,
                 time: show.showtime,      
                 room: show.showRoom,
@@ -40,6 +50,7 @@ function BuyTicketStep1() {
     };
 
     const filteredShowTimes = getFilteredShowTimes();
+    console.log(filteredShowTimes);
 
     return (
         <>
@@ -70,7 +81,8 @@ function BuyTicketStep1() {
                             <Stack direction="row" spacing={4} component="showing">
                                 {filteredShowTimes.map((info, index) => (
                                     <Box component="time" key={index}>
-                                        <Button className="text-center show-time text-white" onClick={() => goStep2(info.schedule, info.time, info.room)}>
+                                        {/* <Button className="text-center show-time text-white" onClick={() => goStep2(info.schedule, info.time, info.room)}> */}
+                                        <Button className="text-center show-time text-white" onClick={() => goStep2(info.showEvent)}>
                                             {info.time.startTime}
                                         </Button>
 

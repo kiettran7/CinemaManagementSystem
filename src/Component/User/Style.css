@@ -546,3 +546,7 @@ Màu các ngày trước đó */
 .promotion-box fieldset {
     border-color: var(--borderHomeColor) !important;
 }
+
+.text-especial {
+    text-decoration: line-through;
+}

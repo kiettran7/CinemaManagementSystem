@@ -8,9 +8,9 @@ export const BuyTicketContextProvider = ({ children }) => {
     // danh sách các bước
     const steps = [
         'Chọn thời gian và địa điểm',
-        'Bước 2',
-        'Bước 3',
-        'Bước 4'
+        'Chọn ghế ngồi',
+        'Chọn đồ ăn',
+        'Thanh toán'
     ];
 
     const [ activeStep, setActiveStep ] = useState(0); // bước hiện tại
@@ -32,6 +32,7 @@ export const BuyTicketContextProvider = ({ children }) => {
     const [ totalPriceFoods, setTotalPriceFoods ] = useState({}); // tổng tiền các loại đồ ăn đã chọn
 
     const [ totalPrice, setTotalPrice ] = useState(0); // tổng tiền
+    const [totalPaid, setTotalPaid] = useState(totalPrice);
 
     const resetContext = () => {
         setActiveStep(0);
@@ -41,7 +42,9 @@ export const BuyTicketContextProvider = ({ children }) => {
         setSelectedFoods([]);
         setQuantityFoods({});
         setTotalPrice(0);
-        setTicketInfo({ selectedDate: null, showStartTime: null, showEndTime: null, showRoom: null });
+        setTicketInfo({ showEvent: null, });
+        // setTicketInfo({ schedule: null, time: null, room: null, showEvent: null, });
+        setTotalPaid(0);
     }
 
     // chuyển sang bước tiếp theo
@@ -54,6 +57,7 @@ export const BuyTicketContextProvider = ({ children }) => {
     // lùi về bước trước đó
     const backStep = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        resetStep4();
         navigate(`/buy-ticket/step${activeStep}?movieId=${selectedMovie.id}`);
     };    
 
@@ -107,6 +111,7 @@ export const BuyTicketContextProvider = ({ children }) => {
         setTotalSeconds(initialTotalSeconds);
         setMinutes(Math.floor(initialTotalSeconds / 60));
         setSeconds(initialTotalSeconds % 60);
+        setTotalPaid(0);
     }
 
 
@@ -209,15 +214,20 @@ export const BuyTicketContextProvider = ({ children }) => {
     }, [totalPriceSeats, totalPriceFoods]);
 
     const [ticketInfo, setTicketInfo] = useState({
-        schedule: null,
-        time: null,
-        room: null,
+        // schedule: null,
+        // time: null,
+        // room: null,
+        showEvent: null,
     });
+
+    const resetStep4 = () => {
+        setTotalPaid(0);
+    }
 
     return (
         <BuyTicketContext.Provider value={{ steps, activeStep, nextStep, backStep, backStep1, minutes, seconds, formatTime, setIsActiveTimer,
-            handleSelectSeat, selectedSeats, totalPriceSeats, handleIncrementFood, handleDecrementFood, selectedFoods,
-                quantityFoods, totalPriceFoods, totalPrice, ticketInfo, setTicketInfo, resetContext }}>
+            handleSelectSeat, selectedSeats, totalPriceSeats, handleIncrementFood, handleDecrementFood, selectedFoods, totalPaid, setTotalPaid,
+                quantityFoods, totalPriceFoods, totalPrice, ticketInfo, setTicketInfo, resetContext, resetStep4 }}>
                     { children }
         </BuyTicketContext.Provider>
     );
