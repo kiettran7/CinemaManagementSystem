@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Api, { endpoints } from '../Api';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useLayoutContext } from './LayoutContext';
+import { Nav } from 'react-bootstrap';
 
 
 const AuthContext = createContext();
@@ -52,6 +53,25 @@ export const AuthContextProvider = ({ children }) => {
         };
     };
 
+    // Logout
+    const handleLogOut = async (token) => {
+        try {
+            const infoResponse = await Api.post(endpoints['log-out'], {
+                "token": token
+            });
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("currentUserInfo");
+
+            return <Navigate to="/dashboard" />
+
+            return infoResponse.data.result;
+        } catch (error) {
+            console.error("Lỗi lấy thông tin người dùng: ", error);
+            throw error;
+        };
+    };
+
     useEffect(() => {
         const fetchProfile = async () => {
             if (!token) return;
@@ -87,7 +107,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
     
     return (
-        <AuthContext.Provider value={{ currentUserInfo, setCurrentUserInfo, fetchAccessToken, fetchCurrentUserInfo }} >
+        <AuthContext.Provider value={{ currentUserInfo, setCurrentUserInfo, fetchAccessToken, fetchCurrentUserInfo, handleLogOut }} >
             { children }
         </AuthContext.Provider>
     );
